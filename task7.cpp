@@ -72,29 +72,18 @@ int getMatrices(string fileName, matrix &matx1, matrix &matx2)
     return 0;
 }
 
-// function to add matrices
-matrix addMatcs(matrix &matx1, matrix &matx2)
+// method to update a value of a given matrix in a given row and column with a new value
+void updateValue(matrix &matx, int row, int col, string val)
 {
-    matrix addMatx; // creates a new matrix to return for the additon
-    for (int i = 0; i < matx1.matx.size(); i++)
-    {                        // loops across rows of the matrices
-        vector<string> line; // creates a vector for the line of the next row
-        for (int j = 0; j < matx1.matx[i].size(); j++)
-        {                                                             // loops across columns
-            int newNum;                                               // number to compute addition
-            newNum = stoi(matx1.matx[i][j]) + stoi(matx2.matx[i][j]); // adds numbers of both matrices
-            if (newNum < 10)
-            {                                            // checks if the number is less than 10 for formatting
-                line.push_back('0' + to_string(newNum)); // appends string of number with 0 at start to line
-            }
-            else
-            {
-                line.push_back(to_string(newNum)); // adds number as string to the line
-            }
-        }
-        addMatx.matx.push_back(line); // add the line to the new matrix
+    if (row >= matx.matx.size() || col >= matx.matx.size() || row < 0 || col < 0) // checks if the row or column are out of the bounds of the matrix
+    {
+        cout << "Invalid position" << endl; // prints error message
     }
-    return addMatx; // returns added matrix
+    else
+    {
+        matx.matx[row][col] = val; // sets row and column value to new value
+    }
+    return;
 }
 
 int main()
@@ -115,8 +104,34 @@ int main()
         return 0;
     }
 
-    matrix newMatx = addMatcs(matx1, matx2);
-    newMatx.print();
+    string matxChoose, row, col, value;
+
+    cout << "Which matrix to change a value in? "; // prompt for matrix
+    cin >> matxChoose;                        // gets matrix choice
+
+    cout << "Row of position to change (index starts at 0): "; // prompt for first row swap
+    cin >> row;                                                // gets first row swap
+
+    cout << "Column of position to change (index starts at 0): "; // prompt for second row swap
+    cin >> col;                                                   // gets second row swap
+
+    cout << "Value to insert: "; // prompt for new value
+    cin >> value;                // gets new value
+
+    switch (stoi(matxChoose)) // switch statement depending on the matrix chosen
+    {
+    case 1:                                              // when matrix 1 is chosen
+        updateValue(matx1, stoi(row), stoi(col), value); // calls update value for matrix 1
+        matx1.print();                                   // prints matrix 1
+        break;
+    case 2:                                              // when matrix 2 is chosen
+        updateValue(matx2, stoi(row), stoi(col), value); // calls update value for matrix 2
+        matx2.print();                                   // prints matrix 2
+        break;
+    default:                                // any selection other than 1 or 2
+        cout << "Invalid matrix selection"; // error message
+        break;
+    }
 
     return 0;
 }

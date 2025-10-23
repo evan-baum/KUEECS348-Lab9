@@ -10,7 +10,27 @@ task2: task2.o
 	$(CC) task2.o -o task2
 	rm -rf *.o
 
-%.o: %.c
+task3: task3.o
+	$(CC) task3.o -o task3
+	rm -rf *.o
+
+task4: task4.o
+	$(CC) task4.o -o task4
+	rm -rf *.o
+
+task5: task5.o
+	$(CC) task5.o -o task5
+	rm -rf *.o
+
+task6: task6.o
+	$(CC) task2.6 -o task6
+	rm -rf *.o
+
+task7: task7.o
+	$(CC) task7.o -o task7
+	rm -rf *.o
+
+%.o: %.cpp
 	$(CC) $(CFLAGS) $<
 
 clean:

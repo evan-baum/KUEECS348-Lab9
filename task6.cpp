@@ -72,29 +72,22 @@ int getMatrices(string fileName, matrix &matx1, matrix &matx2)
     return 0;
 }
 
-// function to add matrices
-matrix addMatcs(matrix &matx1, matrix &matx2)
+// function to swap input columns for a given matrix
+void swapCols(matrix &matx, int col1, int col2)
 {
-    matrix addMatx; // creates a new matrix to return for the additon
-    for (int i = 0; i < matx1.matx.size(); i++)
-    {                        // loops across rows of the matrices
-        vector<string> line; // creates a vector for the line of the next row
-        for (int j = 0; j < matx1.matx[i].size(); j++)
-        {                                                             // loops across columns
-            int newNum;                                               // number to compute addition
-            newNum = stoi(matx1.matx[i][j]) + stoi(matx2.matx[i][j]); // adds numbers of both matrices
-            if (newNum < 10)
-            {                                            // checks if the number is less than 10 for formatting
-                line.push_back('0' + to_string(newNum)); // appends string of number with 0 at start to line
-            }
-            else
-            {
-                line.push_back(to_string(newNum)); // adds number as string to the line
-            }
-        }
-        addMatx.matx.push_back(line); // add the line to the new matrix
+    if ((col1) >= matx.matx.size() || (col2) >= matx.matx.size() || col1 < 0 || col2 < 0) // checks if the columns are out of the bound of the matrix
+    {
+        cout << "Column out of bounds" << endl; // prints error message
     }
-    return addMatx; // returns added matrix
+    else
+    {
+        for (int i = 0; i < matx.matx.size(); i++) { // iterates across rows
+            string temp = matx.matx[i][col1]; // sets temp string to column 1 value of current row
+            matx.matx[i][col1] = matx.matx[i][col2]; // sets column1 value of current row to column 2 value
+            matx.matx[i][col2] = temp; // sets column 2 value of current row to temp column 1
+        }
+    }
+    return;
 }
 
 int main()
@@ -115,8 +108,31 @@ int main()
         return 0;
     }
 
-    matrix newMatx = addMatcs(matx1, matx2);
-    newMatx.print();
+    string matxChoose, swap1, swap2;
+
+    cout << "Which matrix to swap columns? "; // prompt for matrix
+    cin >> matxChoose;                        // gets matrix choice
+
+    cout << "First column to swap (index starts at 0): "; // prompt for first row swap
+    cin >> swap1;                                         // gets first row swap
+
+    cout << "Second column to swap (index starts at 0): "; // prompt for second row swap
+    cin >> swap2;                                          // gets second row swap
+
+    switch (stoi(matxChoose))                      // switch statement depending on the matrix chosen
+    {
+    case 1:                                        // when matrix 1 is chosen
+        swapCols(matx1, stoi(swap1), stoi(swap2)); // calls swap columns for matrix 1
+        matx1.print();                             // prints matrix 1
+        break;
+    case 2:                                        // when matrix 2 is chosen
+        swapCols(matx2, stoi(swap1), stoi(swap2)); // calls swap columns for matrix 2
+        matx2.print();                             // prints matrix 2
+        break;
+    default:                                // any selection other than 1 or 2
+        cout << "Invalid matrix selection"; // error message
+        break;
+    }
 
     return 0;
 }

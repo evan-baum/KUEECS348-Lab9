@@ -72,29 +72,20 @@ int getMatrices(string fileName, matrix &matx1, matrix &matx2)
     return 0;
 }
 
-// function to add matrices
-matrix addMatcs(matrix &matx1, matrix &matx2)
+// function to swap input rows of a given matrix
+void swapRows(matrix &matx, int row1, int row2)
 {
-    matrix addMatx; // creates a new matrix to return for the additon
-    for (int i = 0; i < matx1.matx.size(); i++)
-    {                        // loops across rows of the matrices
-        vector<string> line; // creates a vector for the line of the next row
-        for (int j = 0; j < matx1.matx[i].size(); j++)
-        {                                                             // loops across columns
-            int newNum;                                               // number to compute addition
-            newNum = stoi(matx1.matx[i][j]) + stoi(matx2.matx[i][j]); // adds numbers of both matrices
-            if (newNum < 10)
-            {                                            // checks if the number is less than 10 for formatting
-                line.push_back('0' + to_string(newNum)); // appends string of number with 0 at start to line
-            }
-            else
-            {
-                line.push_back(to_string(newNum)); // adds number as string to the line
-            }
-        }
-        addMatx.matx.push_back(line); // add the line to the new matrix
+    if ((row1) >= matx.matx.size() || (row2) >= matx.matx.size() || row1 < 0 || row2 < 0)
+    {                                        // checks if the rows are outside the bounds of the matrix
+        cout << "Row out of bounds" << endl; // error message
     }
-    return addMatx; // returns added matrix
+    else
+    {
+        vector<string> temp = matx.matx[row1]; // sets temp vector to row 1
+        matx.matx[row1] = matx.matx[row2];     // sets row 1 to row 2
+        matx.matx[row2] = temp;                // sets row 2 to temp of row 1
+    }
+    return;
 }
 
 int main()
@@ -115,8 +106,31 @@ int main()
         return 0;
     }
 
-    matrix newMatx = addMatcs(matx1, matx2);
-    newMatx.print();
+    string matxChoose, swap1, swap2;
+
+    cout << "Which matrix to swap rows? "; // prompt for matrix
+    cin >> matxChoose;                     // gets matrix choice
+
+    cout << "First row to swap (index starts at 0): "; // prompt for first row swap
+    cin >> swap1;                                      // gets first row swap
+
+    cout << "Second row to swap (index starts at 0): "; // prompt for second row swap
+    cin >> swap2;                                       // gets second row swap
+
+    switch (stoi(matxChoose))                      // switch statement depending on the matrix chosen
+    {                                           // switch statement depending on the matrix chosen
+    case 1:                                        // when matrix 1 is chosen
+        swapRows(matx1, stoi(swap1), stoi(swap2)); // calls swap rows for matrix 1
+        matx1.print();                             // prints matrix 1
+        break;
+    case 2:                                        // when matrix 2 is chosen
+        swapRows(matx2, stoi(swap1), stoi(swap2)); // calls swap rows for matrix 2
+        matx2.print();                             // prints matrix 2
+        break;
+    default:                                // any selection other than 1 or 2
+        cout << "Invalid matrix selection"; // error message
+        break;
+    }
 
     return 0;
 }
