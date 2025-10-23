@@ -63,8 +63,26 @@ int getMatrices(string fileName, matrix &matx1, matrix &matx2)
     return 0;
 }
 
+// function to multiply two matrices and return the result
 matrix multMatcs( matrix matx1, matrix matx2) {
+    matrix outMatx; // creates the matrix to output
 
+    for (int i = 0; i < matx1.matx.size(); ++i) { // loops across matx1 rows
+        vector<string> line;// creates a line for the new matrix
+
+        for (int j = 0; j < matx2.matx[0].size(); ++j) { // loops across matx2 columns
+            int sum = 0; // creates a variable to store sum of rows and columns
+            for (int k = 0; k < matx1.matx[0].size(); ++k) { // loops across matx1 columns and matx2 rows
+                int a = stod(matx1.matx[i][k]); // gets value from matx1
+                int b = stod(matx2.matx[k][j]); // gets value from matx2
+                sum += a * b; // adds values to sum int
+            }
+
+            line.push_back(to_string(sum)); // adds sum value to line
+        }
+        outMatx.matx.push_back(line); // adds line to new matrix
+    }
+    return outMatx;
 }
 
 int main() {
@@ -81,6 +99,9 @@ int main() {
         cout << e.what(); // prints if an error is thrown
         return 0;
     }
+
+    matrix multMatx = multMatcs(matx1, matx2); // gets multiplication of matrixes
+    multMatx.print(); // prints multiplied matrix
 
     return 0;
 }
